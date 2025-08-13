@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Staff Panel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2>Staff Panel</h2>
+
+  <h3>Orders</h3>
+  <form method="get">
+    Filter by status:
+    <select name="status">
+      <option value="">All</option>
+      <option value="Placed" {% if filter_status=='Placed' %}selected{% endif %}>Placed</option>
+      <option value="Preparing" {% if filter_status=='Preparing' %}selected{% endif %}>Preparing</option>
+      <option value="Served" {% if filter_status=='Served' %}selected{% endif %}>Served</option>
+    </select>
+    <button type="submit">Filter</button>
+  </form>
+
+  <ul>
+    {% for o in orders %}
+      <li>
+        {{ o.customer }} - Table {{ o.table_no }} - ${{ o.total }} - {{ o.status }}
+        <form method="post" style="display:inline">
+          <input type="hidden" name="order_id" value="{{ o._id }}">
+          <select name="status">
+            <option>Placed</option>
+            <option>Preparing</option>
+            <option>Served</option>
+          </select>
+          <button type="submit">Update</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <h3>Tables</h3>
+  <ul>
+    {% for t in tables %}
+      <li>
+        Table {{ t.table_no }} — seats: {{ t.seats }} — {% if t.available %}Available{% else %}Unavailable{% endif %}
+        <form method="post" style="display:inline">
+          <input type="hidden" name="table_no" value="{{ t.table_no }}">
+          <label>Available:
+            <input type="checkbox" name="available" {% if t.available %}checked{% endif %}>
+          </label>
+          <button type="submit">Set</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

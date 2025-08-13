@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Place Order</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2>Place Order</h2>
+  <form method="post">
+    Your Name: <input name="customer" required><br>
+    Table:
+    <select name="table_no">
+      {% for t in tables %}
+        <option value="{{ t.table_no }}" {% if not t.available %}disabled{% endif %}>
+          Table {{ t.table_no }} (seats: {{ t.seats }}) {% if not t.available %}- Not available{% endif %}
+        </option>
+      {% endfor %}
+    </select><br>
+
+    <h3>Choose Items</h3>
+    {% for it in items %}
+      <input type="checkbox" name="item" value="{{ it.name }}"> {{ it.name }} — ${{ it.price }} <br>
+    {% endfor %}
+
+    <button type="submit">Submit Order</button>
+  </form>
+</body>
+</html>

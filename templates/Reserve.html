@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reserve Table</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2>Reserve Table</h2>
+  <form method="post">
+    Name: <input name="name" required><br>
+    Date: <input type="date" name="date" required><br>
+    Table:
+    <select name="table_no">
+      {% for t in tables %}
+        <option value="{{ t.table_no }}" {% if not t.available %}disabled{% endif %}>
+          Table {{ t.table_no }} (seats: {{ t.seats }}) {% if not t.available %}- Not available{% endif %}
+        </option>
+      {% endfor %}
+    </select><br>
+    <button type="submit">Reserve</button>
+  </form>
+
+  <h3>Table Status</h3>
+  <ul>
+    {% for t in tables %}
+      <li>Table {{ t.table_no }} — {% if t.available %}Available{% else %}Unavailable ({{ t.get('reserved_by','-') }}){% endif %}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Menu</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2>Menu</h2>
+
+  <form method="get">
+    Category:
+    <select name="category">
+      <option value="">All</option>
+      {% for c in categories %}
+        <option value="{{ c }}" {% if c==selected_category %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+    Sort:
+    <select name="sort">
+      <option value="">None</option>
+      <option value="price_asc" {% if sort=='price_asc' %}selected{% endif %}>Price ↑</option>
+      <option value="price_desc" {% if sort=='price_desc' %}selected{% endif %}>Price ↓</option>
+      <option value="name" {% if sort=='name' %}selected{% endif %}>Name</option>
+    </select>
+    <button type="submit">Apply</button>
+  </form>
+
+  <ul>
+    {% for item in items %}
+      <li>{{ item.name }} — {{ item.category }} — ${{ item.price }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
